@@ -17,3 +17,7 @@ ls ~/.config/base16-shell/scripts
 
 base16-gruvbox-dark-hard
 ```
+
+```
+PS1=[\u@\h: \w]\n$
+```
