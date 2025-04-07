@@ -1,7 +1,7 @@
 # Neovim Configs
 Neovim configuration files for different plugin managers
 
-# Neovim (Unix\Linux)
+# Neovim Linux
 ### Installation
 ```
 curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
