@@ -12,14 +12,14 @@
 
 call plug#begin()
 
-Plug 'https://github.com/vim-airline/vim-airline'
-Plug 'https://github.com/sho-87/kanagawa-paper.nvim'
-Plug 'https://github.com/nvim-telescope/telescope.nvim'
-Plug 'https://github.com/nvim-treesitter/nvim-treesitter'
-Plug 'https://github.com/nvim-lua/plenary.nvim'
-Plug 'https://github.com/nvim-telescope/telescope-file-browser.nvim'
-Plug 'https://github.com/ryanoasis/vim-devicons'
-Plug 'https://github.com/preservim/nerdtree'
+Plug 'vim-airline/vim-airline'
+Plug 'sho-87/kanagawa-paper.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+Plug 'ryanoasis/vim-devicons'
+Plug 'preservim/nerdtree'
 
 call plug#end()
 
@@ -36,5 +36,5 @@ call plug#end()
 :nmap <C-d> :NERDTree<Enter>
 :noremap <C-t> :NERDTreeToggle<CR>
 
-:nmap <M-z> :vsp C:\Users\Joseph Clyde Mar\AppData\Local\nvim\init.vim<Enter>
+:nmap <M-z> :vsp ~/.config/nvim/init.vim<Enter>
 
