@@ -29,7 +29,7 @@ require("lazy").setup({
         { "nvim-tree/nvim-web-devicons", opts = {} },
         { "folke/tokyonight.nvim",       lazy = false, priority = 1000, opts = {} },
         { "morhetz/gruvbox" },
-        { "nvim-tree/nvim-web-devicons", opts = {} },
+        { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
     },
     -- Configure any other settings here. See the documentation for more details.
     -- colorscheme that will be used when installing plugins.
