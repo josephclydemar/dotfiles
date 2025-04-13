@@ -28,6 +28,7 @@ PROMPT_COMMAND=set_custom_shell_prompt
 export BASE16_SHELL="$HOME/.config/bash/base16-shell/"
 [ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && source "$BASE16_SHELL/profile_helper.sh"
 
+alias bat="batcat"
 
 # cd-fzf func
 fzf_cd() {

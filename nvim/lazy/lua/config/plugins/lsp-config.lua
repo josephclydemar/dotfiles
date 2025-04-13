@@ -12,6 +12,7 @@ return {
 				ensure_installed = {
 					"lua_ls",
 					"ts_ls",
+                    "intelephense",
 					-- "ast_grep",
 				},
 			})
@@ -39,6 +40,10 @@ return {
 			lspconfig.ts_ls.setup({
 				capabilities = capabilities,
 			})
+
+            lspconfig.intelephense.setup({
+                capabilities = capabilities,
+            })
 
 			-- lspconfig.ast_grep.setup({
 			--     cmd = { 'ast-grep', 'lsp' },
