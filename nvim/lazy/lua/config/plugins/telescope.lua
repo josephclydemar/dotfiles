@@ -7,7 +7,6 @@ return {
             { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
         config = function()
-            local split_ff = require("config.telescope.split_ff")
             local fgrep = require("config.telescope.fgrep")
             require("telescope").setup({
                 defaults = {
@@ -50,7 +49,6 @@ return {
             --require("telescope").load_extension("split_ff")
             local builtin = require("telescope.builtin")
             vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-            vim.keymap.set("n", "<leader>fv", split_ff.vsplit_ff, {})
             vim.keymap.set("n", "<leader>fg", fgrep.live_fgrep, {})
             vim.keymap.set("n", "<leader>gg", builtin.live_grep, {})
             vim.keymap.set("n", "<leader>bb", builtin.buffers, {})
