@@ -1,5 +1,32 @@
 return {
-	-- No need to copy this inside `setup()`. Will be used automatically.
+	{
+		"echasnovski/mini.move",
+		version = "*",
+		config = function()
+			require("mini.move").setup({
+				mappings = {
+					-- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+					left = "<M-Left>",
+					right = "<M-Right>",
+					down = "<M-Down>",
+					up = "<M-Up>",
+
+					-- Move current line in Normal mode
+					line_left = "<M-Left>",
+					line_right = "<M-Right>",
+					line_down = "<M-Down>",
+					line_up = "<M-Up>",
+				},
+			})
+		end,
+	},
+	-- {
+	--    "echasnovski/mini.pairs",
+	-- 	version = "*",
+	-- 	config = function()
+	-- 		require("mini.pairs").setup()
+	-- 	end,
+	-- },
 	{
 		"echasnovski/mini.comment",
 		version = "*",

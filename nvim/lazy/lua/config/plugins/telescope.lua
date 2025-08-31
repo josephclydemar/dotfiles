@@ -1,100 +1,357 @@
-return {
-    {
-        "nvim-telescope/telescope.nvim",
-        tag = "0.1.8",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-        },
-        config = function()
-            local fgrep = require("config.telescope.fgrep")
-            require("telescope").setup({
-                defaults = {
-                    path_display = { "shorten" },
-                },
-                extensions = {
-                    fzf = {},
-                },
-                pickers = {
-                    find_files = {
-                        theme = "ivy",
-                    },
-                    live_grep = {
-                        theme = "ivy",
-                    },
-                    buffers = {
-                        theme = "ivy",
-                    },
-                    current_buffer_fuzzy_find = {
-                        theme = "ivy",
-                    },
-                    git_commits = {
-                        theme = "ivy",
-                    },
-                    oldfiles = {
-                        theme = "ivy",
-                    },
-                    lsp_references = {
-                        theme = "ivy",
-                    },
-                    lsp_definitions = {
-                        theme = "ivy",
-                    },
-                    diagnostics = {
-                        theme = "ivy",
-                    },
-                },
-            })
-            require("telescope").load_extension("fzf")
-            --require("telescope").load_extension("split_ff")
-            local builtin = require("telescope.builtin")
-            vim.keymap.set("n", "<leader>ff", builtin.find_files, {})
-            vim.keymap.set("n", "<leader>fg", fgrep.live_fgrep, {})
-            vim.keymap.set("n", "<leader>gg", builtin.live_grep, {})
-            vim.keymap.set("n", "<leader>bb", builtin.buffers, {})
-            vim.keymap.set("n", "<leader>vv", builtin.current_buffer_fuzzy_find, {})
-            vim.keymap.set("n", "<leader>cc", builtin.git_commits, {})
-            vim.keymap.set("n", "<leader>oo", builtin.oldfiles, {})
-            vim.keymap.set("n", "<leader>rf", builtin.lsp_references, {})
-            vim.keymap.set("n", "<leader>df", builtin.lsp_definitions, {})
-            vim.keymap.set("n", "<leader>dd", builtin.diagnostics, {})
-            vim.keymap.set("n", "<M-z>", function()
-                builtin.find_files({
-                    cwd = vim.fn.stdpath("config"),
-                })
-            end, {})
-        end,
-    },
-    {
-        "nvim-telescope/telescope-ui-select.nvim",
-        config = function()
-            -- This is your opts table
-            require("telescope").setup({
-                extensions = {
-                    ["ui-select"] = {
-                        require("telescope.themes").get_dropdown({
-                            -- even more opts
-                        }),
+-- prompt_title = "Current Buffer Live Grep",
+-- search_dirs = { vim.fn.expand("%:p") },
 
-                        -- pseudo code / specification for writing custom displays, like the one
-                        -- for "codeactions"
-                        -- specific_opts = {
-                        --   [kind] = {
-                        --     make_indexed = function(items) -> indexed_items, width,
-                        --     make_displayer = function(widths) -> displayer
-                        --     make_display = function(displayer) -> function(e)
-                        --     make_ordinal = function(e) -> string
-                        --   },
-                        --   -- for example to disable the custom builtin "codeactions" display
-                        --      do the following
-                        --   codeactions = false,
-                        -- }
-                    },
-                },
-            })
-            -- To get ui-select loaded and working with telescope, you need to call
-            -- load_extension, somewhere after setup function:
-            require("telescope").load_extension("ui-select")
-        end,
-    },
+return {
+	{
+		"nvim-telescope/telescope.nvim",
+		tag = "0.1.8",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			{ "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+		},
+		config = function()
+			require("telescope").load_extension("fzf")
+			require("telescope").setup({
+				defaults = {
+					-- path_display = { "shorten" },
+					borderchars = {
+						prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+						results = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+						preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+					},
+				},
+				extensions = {
+					fzf = {},
+				},
+			})
+
+			local fgrep = require("config.telescope.fgrep")
+			local builtin = require("telescope.builtin")
+			-- local actions = require("telescope.actions")
+			-- local action_state = require("telescope.actions.state")
+
+			vim.keymap.set("n", "<leader>ff", function()
+				builtin.find_files({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Find Files" })
+
+			vim.keymap.set("n", "<leader>tt", function()
+				builtin.find_files({
+					prompt_title = "No Ignore Find Files",
+					hidden = true,
+					no_ignore = true,
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "No Ignore Find Files" })
+
+			-- vim.keymap.set("n", "<leader>tt", function()
+			-- 	builtin.find_files({
+			--        prompt_title = "New Tab Find Files",
+			--        hidden = true,
+			-- 		attach_mappings = function(_, map)
+			-- 			map("i", "<CR>", function(prompt_bufnr)
+			-- 				local entry = action_state.get_selected_entry()
+			-- 				local filepath = entry and entry.path or entry.filename
+			--            actions.close(prompt_bufnr)
+			--            vim.cmd("tabnew " .. filepath)
+			-- 			end)
+			-- 			return true
+			-- 		end,
+			-- 	})
+			-- end, { desc = "New Tab Find Files" })
+
+			vim.keymap.set("n", "<leader>yy", function()
+				fgrep.live_fgrep({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Live File Grep" })
+
+			vim.keymap.set("n", "<leader>gg", function()
+				builtin.live_grep({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+					additional_args = function()
+						return { "--pcre2" }
+					end,
+				})
+			end, { desc = "Live Grep" })
+
+			vim.keymap.set("n", "<leader>hh", function()
+				builtin.grep_string({
+					prompt_title = "Grep String",
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Grep String" })
+
+			vim.keymap.set("n", "<leader>ll", function()
+				builtin.quickfix({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Quickfix" })
+
+			vim.keymap.set("n", "<leader>vv", function()
+				builtin.current_buffer_fuzzy_find({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Current Buffer Fuzzy Find" })
+
+			vim.keymap.set("n", "<leader>bb", function()
+				builtin.buffers({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Buffers" })
+
+			vim.keymap.set("n", "<leader>vc", function()
+				builtin.git_commits({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Git Commits" })
+
+			vim.keymap.set("n", "<leader>vs", function()
+				builtin.git_status({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Git Status" })
+
+			vim.keymap.set("n", "<leader>vb", function()
+				builtin.git_branches({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Git Branches" })
+
+			vim.keymap.set("n", "<leader>oo", function()
+				builtin.oldfiles({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Old Files" })
+
+			vim.keymap.set("n", "<leader>rf", function()
+				builtin.lsp_references({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "LSP References" })
+
+			vim.keymap.set("n", "<leader>df", function()
+				builtin.lsp_definitions({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "LSP Definitions" })
+
+			vim.keymap.set("n", "<leader>dd", function()
+				builtin.diagnostics({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Diagnostics" })
+
+			vim.keymap.set("n", "<leader>mm", function()
+				builtin.marks({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Marks" })
+
+			vim.keymap.set("n", "<leader>jj", function()
+				builtin.jumplist({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Jumplist" })
+
+			vim.keymap.set("n", "<leader>kk", function()
+				builtin.keymaps({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Keymaps" })
+
+			vim.keymap.set("n", "<leader>cc", function()
+				builtin.commands({
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, { desc = "Commands" })
+
+			vim.keymap.set("n", "<M-z>", function()
+				builtin.find_files({
+					prompt_title = "NVIM Config Find Files",
+					cwd = vim.fn.stdpath("config"),
+
+					layout_strategy = "vertical",
+					previewer = true,
+					layout_config = {
+						width = 0.9,
+						height = 35,
+						preview_height = 15,
+						prompt_position = "bottom",
+					},
+					border = true,
+				})
+			end, {})
+		end,
+	},
+	{
+		"nvim-telescope/telescope-ui-select.nvim",
+		config = function()
+			require("telescope").setup({
+				extensions = {
+					["ui-select"] = {
+						require("telescope.themes").get_dropdown({
+							-- even more opts
+						}),
+					},
+				},
+			})
+			-- To get ui-select loaded and working with telescope, you need to call
+			-- load_extension, somewhere after setup function:
+			require("telescope").load_extension("ui-select")
+		end,
+	},
 }
