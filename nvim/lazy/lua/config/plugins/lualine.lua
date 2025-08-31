@@ -8,8 +8,8 @@ return {
             },
             sections = {
                 lualine_a = {"mode"},
-                lualine_b = {"filename"},
-                lualine_c = {"branch", "diff", "diagnostics"},
+                lualine_b = {"filename", "diff"},
+                lualine_c = {"branch", "diagnostics"},
             },
 		})
 	end,
