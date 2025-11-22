@@ -1,0 +1,12 @@
+vim.cmd("nmap <M-1> :BufferGoto 1<CR>")
+vim.cmd("nmap <M-2> :BufferGoto 2<CR>")
+vim.cmd("nmap <M-3> :BufferGoto 3<CR>")
+vim.cmd("nmap <M-4> :BufferGoto 4<CR>")
+vim.cmd("nmap <M-5> :BufferGoto 5<CR>")
+vim.cmd("nmap <M-6> :BufferGoto 6<CR>")
+vim.cmd("nmap <M-7> :BufferGoto 7<CR>")
+vim.cmd("nmap <M-8> :BufferGoto 8<CR>")
+vim.cmd("nmap <M-9> :BufferGoto 9<CR>")
+vim.cmd("nmap <M-0> :BufferLast<CR>")
+-- vim.cmd("nnoremap <Space>h :e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>")
+

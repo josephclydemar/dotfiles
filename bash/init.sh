@@ -1,9 +1,12 @@
 
 set_custom_shell_prompt () {
-  local venv=""
+  local shell_context=""
   local git_branch=""
   if [[ -n "$VIRTUAL_ENV" ]]; then
-    venv="($(basename "$VIRTUAL_ENV")) "
+    shell_context="($(basename "$VIRTUAL_ENV")) "
+  fi
+  if [[ "$DEVBOX_SHELL_ENABLED" -eq 1 ]]; then
+    shell_context="(devbox) "
   fi
 
   if git rev-parse --is-inside-work-tree &>/dev/null; then
@@ -12,7 +15,7 @@ set_custom_shell_prompt () {
         git_branch=" \[\033[38;5;239m\]($branch)\[\033[00m\]"
     fi
   fi
-  PS1="┌${venv}[\[\033[01;34m\]\w\[\033[00m\]]${git_branch}\n└(\[\033[01;32m\]\u@\h\[\033[00m\]) \$ "
+  PS1="┌${shell_context}[\[\033[01;34m\]\w\[\033[00m\]]${git_branch}\n└(\[\033[01;32m\]\u@\h\[\033[00m\]) \$ "
 }
 PROMPT_COMMAND=set_custom_shell_prompt
 
@@ -30,23 +33,30 @@ export DOTNET_ROOT=$HOME/.installations/dotnet
 export PATH=$PATH:$HOME/.installations/dotnet
 
 
-fzf_cd() {
+fzf_cd_fn() {
   cd $(find $(realpath .) -maxdepth 3 -type d | fzf --preview "pwd; echo ''; ls -la {}" --preview-window=right) || return
 }
-alias cdf="fzf_cd"
 
-fzf_nvim() {
+fzf_nvim_fn() {
   nvim $(find $(realpath .) -maxdepth 3 -type f -readable | xargs file --mime | grep -Ei "ascii|utf-8" | awk '{print $1}' | cut -d ":" -f1 | fzf --preview "batcat --color=always --line-range=:10 {}" --preview-window=up:15) || return
 }
-alias nvimf="fzf_nvim"
 
-# tmux-fzf func
-fzf_tmux() {
+fzf_tmux_fn() {
   local dir
   dir=$(find $(realpath .) -maxdepth 3 -type d | fzf --preview "pwd; echo ''; ls -la {}" --preview-window=right) || return
   # tmux new-session -s "$(echo "$dir" | sed 's/\// /g' | awk '{print $(NF-1) "-" $NF}')" -c "$dir" || return
   tmux new-session -c "$dir" || return
 }
-alias tmuxf="fzf_tmux"
 
+alias cdf="fzf_cd_fn"
+alias nvimf="fzf_nvim_fn"
+alias tmuxf="fzf_tmux_fn"
+alias bat="batcat"
+alias lzgit="lazygit"
+
+alias rm="trash-put"
+alias rl="trash-list"
+alias trr="trash-restore"
+alias trm="trash-rm"
+alias tre="trash-empty"
 
