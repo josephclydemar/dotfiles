@@ -1,0 +1,16 @@
+[user]
+	name = josephclydemar
+	email = c@gmail.com
+[core]
+	editor = nvim
+[alias]
+  br = branch
+  st = status -s
+	lg = log --pretty=format:'%Cgreen(%an)%Creset %C(auto)%h %s'
+	lga = log --oneline --graph --all
+  sw = switch
+  swf = "!git switch $(git branch | fzf)"
+[diff]
+	tool = vimdiff
+[merge]
+	tool = vimdiff
